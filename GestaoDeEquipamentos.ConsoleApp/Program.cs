@@ -27,6 +27,12 @@ internal class Program
                 case "4":
                     telaEquipamento.VisualizarEquipamentos(true);
                     break;
+                case "5":
+                    telaEquipamento.RegistrarManutencao();
+                    break;
+                case "6":
+                    telaEquipamento.ListarManutencao();
+                    break;
 
                 default:
                     Console.WriteLine("Saindo do programa... ");

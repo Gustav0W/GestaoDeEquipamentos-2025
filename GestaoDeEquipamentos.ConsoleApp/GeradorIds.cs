@@ -3,6 +3,7 @@
     public static class GeradorIds
     {
         public static int IdEquipamentos = 0;
+        public static int IdManutencao = 0;
         public static int GerarIdEquipamento()
         {
             IdEquipamentos++;
@@ -13,6 +14,11 @@
         {
             return Guid.NewGuid();
 
+        }
+        public static int GerarIdManutencao()
+        {
+            IdManutencao++;
+            return IdManutencao;
         }
     }
 

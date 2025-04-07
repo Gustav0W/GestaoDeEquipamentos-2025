@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GestaoDeEquipamentos.ConsoleApp
+﻿namespace GestaoDeEquipamentos.ConsoleApp
 {
     class TelaEquipamento
     {
@@ -21,6 +15,8 @@ namespace GestaoDeEquipamentos.ConsoleApp
             Console.WriteLine("2 - Editar Equipamento");
             Console.WriteLine("3 - Excluir Equipamento");
             Console.WriteLine("4 - Visualizar Equipamentos");
+            Console.WriteLine("5 - Registrar Manutenção");
+            Console.WriteLine("6 - Visualizar Manutenções");
             Console.WriteLine("----------------------------");
 
             Console.Write("Digite uma opção válida: ");
@@ -168,6 +164,53 @@ namespace GestaoDeEquipamentos.ConsoleApp
 
             Console.WriteLine();
 
+        }
+
+        public ChamadoManutencao[] manutencao = new ChamadoManutencao[10];
+        public int contadorManutencao = 0;
+        public void RegistrarManutencao()
+        {
+            Console.Clear();
+            Console.WriteLine("   Cadastro de Manutenções   ");
+            Console.WriteLine("----------------------------\n");
+
+            Console.Write("Título do chamado: ");
+            string titulo = Console.ReadLine()!;
+
+            Console.Write("Descrição do chamado: ");
+            string descricao = Console.ReadLine()!;
+
+            Console.Write("Informe o ID do equipamento: ");
+            string equipamento = Console.ReadLine()!;
+
+            Console.Write("Abertura do chamado (dd/MM/yyyy)");
+            DateTime dataChamado = Convert.ToDateTime(Console.ReadLine());
+
+            ChamadoManutencao novaManutencao = new ChamadoManutencao(titulo, descricao, equipamento, dataChamado);
+            novaManutencao.IdManutencao = GeradorIds.GerarIdManutencao();
+
+            manutencao[contadorManutencao++] = novaManutencao;
+        }
+        public void ListarManutencao()
+        {
+            Console.Clear();
+            Console.WriteLine("   Listagem de Manutenções   ");
+            Console.WriteLine("------------------------------\n");
+
+            Console.WriteLine();
+
+            for (int i = 0; i < contadorManutencao; i++)
+            {
+                ChamadoManutencao cM = manutencao[i];
+
+                if (cM == null) continue;
+
+                Console.WriteLine($"Id manutenção: {cM.IdManutencao}\n" +
+                    $"Titulo: {cM.Titulo}\n" +
+                    $"Descrição: {cM.Descricao}\n" +
+                    $"Equipamento: {cM.equipamento}\n" +
+                    $"Data de abertura: {cM.DataDeAbertura.ToShortDateString()}");
+            }
         }
     }
 }
