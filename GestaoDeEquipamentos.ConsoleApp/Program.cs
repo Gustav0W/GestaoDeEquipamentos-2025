@@ -31,7 +31,13 @@ internal class Program
                     telaEquipamento.RegistrarManutencao();
                     break;
                 case "6":
-                    telaEquipamento.ListarManutencao();
+                    telaEquipamento.ListarManutencao(true);
+                    break;
+                case "7":
+                    telaEquipamento.EditarManutencao();
+                    break;
+                case "8":
+                    telaEquipamento.ExcluirManutencao();
                     break;
 
                 default:

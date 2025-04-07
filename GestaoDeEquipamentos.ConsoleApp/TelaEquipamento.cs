@@ -17,6 +17,8 @@
             Console.WriteLine("4 - Visualizar Equipamentos");
             Console.WriteLine("5 - Registrar Manutenção");
             Console.WriteLine("6 - Visualizar Manutenções");
+            Console.WriteLine("7 - Editar Manutenção");
+            Console.WriteLine("8 - Excluir Manutenção");
             Console.WriteLine("----------------------------");
 
             Console.Write("Digite uma opção válida: ");
@@ -183,7 +185,7 @@
             Console.Write("Informe o ID do equipamento: ");
             string equipamento = Console.ReadLine()!;
 
-            Console.Write("Abertura do chamado (dd/MM/yyyy)");
+            Console.Write("Abertura do chamado (dd/MM/yyyy): ");
             DateTime dataChamado = Convert.ToDateTime(Console.ReadLine());
 
             ChamadoManutencao novaManutencao = new ChamadoManutencao(titulo, descricao, equipamento, dataChamado);
@@ -191,12 +193,14 @@
 
             manutencao[contadorManutencao++] = novaManutencao;
         }
-        public void ListarManutencao()
+        public void ListarManutencao(bool exibirTitulo)
         {
             Console.Clear();
-            Console.WriteLine("   Listagem de Manutenções   ");
-            Console.WriteLine("------------------------------\n");
-
+            if (exibirTitulo)
+            {
+                Console.WriteLine("   Listagem de Manutenções   ");
+                Console.WriteLine("------------------------------\n");
+            }
             Console.WriteLine();
 
             for (int i = 0; i < contadorManutencao; i++)
@@ -209,8 +213,92 @@
                     $"Titulo: {cM.Titulo}\n" +
                     $"Descrição: {cM.Descricao}\n" +
                     $"Equipamento: {cM.equipamento}\n" +
-                    $"Data de abertura: {cM.DataDeAbertura.ToShortDateString()}");
+                    $"Data de abertura: {cM.DataDeAbertura.ToShortDateString()}\n\n");
             }
+        }
+        public void EditarManutencao()
+        {
+            Console.Clear();
+
+            Console.WriteLine("------------------------------");
+            Console.WriteLine("     Edição de Manutenção     ");
+            Console.WriteLine("------------------------------");
+
+            ListarManutencao(false);
+
+            Console.Write("Digite o ID do registro que deseja selecionar: ");
+            int idSelecionado = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Título do chamado: ");
+            string titulo = Console.ReadLine()!;
+
+            Console.Write("Descrição do chamado: ");
+            string descricao = Console.ReadLine()!;
+
+            Console.Write("Informe o ID do equipamento: ");
+            string equipamento = Console.ReadLine()!;
+
+            Console.Write("Abertura do chamado (dd/MM/yyyy): ");
+            DateTime dataChamado = Convert.ToDateTime(Console.ReadLine());
+
+            ChamadoManutencao novaManutencao = new ChamadoManutencao(titulo, descricao, equipamento, dataChamado);
+
+            bool conseguiuEditar = false;
+
+            for (int i = 0; i < equipamentos.Length; i++)
+            {
+                if (manutencao[i] == null) continue;
+
+                else if (manutencao[i].IdManutencao == idSelecionado)
+                {
+                    manutencao[i].Titulo = novaManutencao.Titulo;
+                    manutencao[i].Descricao = novaManutencao.Descricao;
+                    manutencao[i].equipamento = novaManutencao.equipamento;
+                    manutencao[i].DataDeAbertura = novaManutencao.DataDeAbertura;
+
+                    conseguiuEditar = true;
+                }
+            }
+
+            if (!conseguiuEditar)
+            {
+                Console.WriteLine("Houve um erro durante a edição da manutenção...");
+                return;
+            }
+
+            Console.WriteLine("\nO registro de manutenção foi editado com sucesso!");
+        }
+        public void ExcluirManutencao()
+        {
+            Console.Clear();
+            Console.WriteLine("------------------------------");
+            Console.WriteLine("    Exclusão de Manutenção    ");
+            Console.WriteLine("------------------------------");
+
+            VisualizarEquipamentos(true);
+
+            Console.Write("Digite o ID do registro que deseja selecionar: ");
+            int idSelecionado = Convert.ToInt32(Console.ReadLine());
+
+            bool conseguiuExcluir = false;
+
+            for (int i = 0; i < manutencao.Length; i++)
+            {
+                if (manutencao[i] == null) continue;
+
+                else if (manutencao[i].IdManutencao == idSelecionado)
+                {
+                    manutencao[i] = null!;
+                    conseguiuExcluir = true;
+                }
+            }
+            if (!conseguiuExcluir)
+            {
+                Console.WriteLine("Houve um erro durante a exclusão de um registro... ");
+                return;
+            }
+
+            Console.WriteLine("\nO registro de manutenção foi excluído com sucesso!");
         }
     }
 }
