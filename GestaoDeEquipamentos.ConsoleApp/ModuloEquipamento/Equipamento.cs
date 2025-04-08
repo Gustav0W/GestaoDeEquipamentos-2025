@@ -1,4 +1,5 @@
-﻿namespace GestaoDeEquipamentos.ConsoleApp;
+﻿namespace GestaoDeEquipamentos.ConsoleApp.ModuloEquipamento;
+
 public class Equipamento
 {
     public int Id;
@@ -7,7 +8,6 @@ public class Equipamento
     public decimal PrecoAquisicao;
     public DateTime DataFabricacao;
 
-    //Construtor equipamento 
     public Equipamento(string nome, string fabricante, decimal precoAquisicao, DateTime dataFabricacao)
     {
         Nome = nome;
@@ -16,13 +16,10 @@ public class Equipamento
         DataFabricacao = dataFabricacao;
     }
 
-    //Regra de negócio
     public string ObterNumeroSerie()
     {
         string tresPrimeirosCaracteres = Nome.Substring(0, 3).ToUpper();
 
         return $"{tresPrimeirosCaracteres}-{Id}";
     }
-
 }
-

@@ -1,53 +1,88 @@
-﻿namespace GestaoDeEquipamentos.ConsoleApp;
-internal class Program
+﻿
+using GestaoDeEquipamentos.ConsoleApp.Compartilhado;
+using GestaoDeEquipamentos.ConsoleApp.ModuloChamado;
+using GestaoDeEquipamentos.ConsoleApp.ModuloEquipamento;
+using GestaoDeEquipamentos.ConsoleApp.ModuloFuncionario;
+
+namespace GestaoDeEquipamentos.ConsoleApp;
+
+class Program
 {
     static void Main(string[] args)
     {
-
         TelaEquipamento telaEquipamento = new TelaEquipamento();
-        bool prosseguir = true;
-        while (prosseguir)
+
+        RepositorioEquipamento repositorioEquipamento = telaEquipamento.repositorioEquipamento;
+
+        TelaChamado telaChamado = new TelaChamado(repositorioEquipamento);
+
+        TelaPrincipal telaPrincipal = new TelaPrincipal();
+
+        TelaFuncionario telaFuncionario = new TelaFuncionario();
+
+        while (true)
         {
-            string opcaoEscolhida = telaEquipamento.ApresentarMenu();
+            char opcaoPrincipal = telaPrincipal.ApresentarMenuPrincipal();
 
-            switch (opcaoEscolhida)
+            if (opcaoPrincipal == '1')
             {
-                case "1":
-                    telaEquipamento.CadastrarEquipamentos();
-                    break;
+                char opcaoEscolhida = telaEquipamento.ApresentarMenu();
 
-                case "2":
-                    telaEquipamento.EditarEquipamento();
-                    break;
+                switch (opcaoEscolhida)
+                {
+                    case '1': telaEquipamento.CadastrarEquipamento(); break;
 
-                case "3":
-                    telaEquipamento.ExcluirEquipamento();
-                    break;
+                    case '2': telaEquipamento.EditarEquipamento(); break;
 
-                case "4":
-                    telaEquipamento.VisualizarEquipamentos(true);
-                    break;
-                case "5":
-                    telaEquipamento.RegistrarManutencao();
-                    break;
-                case "6":
-                    telaEquipamento.ListarManutencao(true);
-                    break;
-                case "7":
-                    telaEquipamento.EditarManutencao();
-                    break;
-                case "8":
-                    telaEquipamento.ExcluirManutencao();
-                    break;
+                    case '3': telaEquipamento.ExcluirEquipamento(); break;
 
-                default:
-                    Console.WriteLine("Saindo do programa... ");
-                    prosseguir = false;
-                    break;
+                    case '4': telaEquipamento.VisualizarEquipamentos(true); break;
+
+                    default: break;
+                }
             }
-            Console.ReadLine();
+
+            else if (opcaoPrincipal == '2')
+            {
+                char opcaoEscolhida = telaChamado.ApresentarMenu();
+
+                switch (opcaoEscolhida)
+                {
+                    case '1': telaChamado.CadastrarChamado(); break;
+
+                    case '2': telaChamado.EditarChamado(); break;
+
+                    case '3': telaChamado.ExcluirChamado(); break;
+
+                    case '4': telaChamado.VisualizarChamados(true); break;
+
+                    default: break;
+                }
+            }
+            else if (opcaoPrincipal == '3')
+            {
+                char opcaoEscolhida = telaFuncionario.ApresentarMenu();
+
+                switch (opcaoEscolhida)
+                {
+                    case '1': telaFuncionario.CadastrarFuncionario(); break;
+
+                    case '2': telaFuncionario.EditarFuncionario(); break;
+
+                    case '3': telaFuncionario.ExcluirFuncionario(); break;
+
+                    case '4': telaFuncionario.VisualizarFuncionarios(true); break;
+
+                    default: break;
+                }
+            }
+            else if (opcaoPrincipal == 'S' || opcaoPrincipal == 's')
+            {
+                break;
+            }
+
+                Console.ReadLine();
         }
+
     }
-
-
 }
