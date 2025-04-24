@@ -1,25 +1,55 @@
-﻿namespace GestaoDeEquipamentos.ConsoleApp.ModuloEquipamento;
+﻿using GestaoDeEquipamentos.ConsoleApp.Compartilhado;
+using GestaoDeEquipamentos.ConsoleApp.ModuloFabricante;
 
-public class Equipamento
+namespace GestaoDeEquipamentos.ConsoleApp.ModuloEquipamento;
+
+public class Equipamento : EntidadeBase<Equipamento>
 {
-    public int Id;
-    public string Nome;
-    public string Fabricante;
-    public decimal PrecoAquisicao;
-    public DateTime DataFabricacao;
-
-    public Equipamento(string nome, string fabricante, decimal precoAquisicao, DateTime dataFabricacao)
+    public string Nome { get; set; }
+    public Fabricante Fabricante { get; set; }
+    public decimal PrecoAquisicao { get; set; }
+    public DateTime DataFabricacao { get; set; }
+    public string NumeroSerie
     {
-        Nome = nome;
-        Fabricante = fabricante;
-        PrecoAquisicao = precoAquisicao;
-        DataFabricacao = dataFabricacao;
+        get
+        {
+            string tresPrimeirosCaracteres = Nome.Substring(0, 3).ToUpper();
+
+            return $"{tresPrimeirosCaracteres}-{Id}";
+        }
     }
 
-    public string ObterNumeroSerie()
+    public Equipamento(string nome, decimal precoAquisicao, DateTime dataFabricacao, Fabricante fabricante)
     {
-        string tresPrimeirosCaracteres = Nome.Substring(0, 3).ToUpper();
+        Nome = nome;
+        PrecoAquisicao = precoAquisicao;
+        DataFabricacao = dataFabricacao;
+        Fabricante = fabricante;
+    }
 
-        return $"{tresPrimeirosCaracteres}-{Id}";
+    public override void AtualizarRegistro(Equipamento equipamentoAtualizado)
+    {
+        Nome = equipamentoAtualizado.Nome;
+        DataFabricacao = equipamentoAtualizado.DataFabricacao;
+        PrecoAquisicao = equipamentoAtualizado.PrecoAquisicao;
+    }
+
+    public override string Validar()
+    {
+        string erros = "";
+
+        if (string.IsNullOrWhiteSpace(Nome))
+            erros += "O campo 'Nome' é obrigatório.\n";
+
+        if (Nome.Length < 3)
+            erros += "O campo 'Nome' precisa conter ao menos 3 caracteres.\n";
+
+        if (PrecoAquisicao <= 0)
+            erros += "O campo 'Preço de Aquisição' deve ser maior que zero.\n";
+
+        if (DataFabricacao > DateTime.Now)
+            erros += "O campo 'Data de Fabricação' deve conter uma data passada.\n";
+
+        return erros;
     }
 }
